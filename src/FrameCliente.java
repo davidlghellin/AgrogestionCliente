@@ -1072,7 +1072,7 @@ public class FrameCliente extends javax.swing.JFrame
 
                     ///mio
                     //parcela
-                    if (tabla == "PARCELA")
+                    if (tabla == "FINCA")
                     {
                         String[] nombreColumnas =
                         {
@@ -1087,17 +1087,12 @@ public class FrameCliente extends javax.swing.JFrame
 //	              
                             Object[] nuevaFila =
                             {
-                                 nombre, localizacion, descripcion
+                                nombre, localizacion, descripcion
                             };
                             dtm.addRow(nuevaFila);
                         }
-                        
-                        
-                    } 
-                    //finmio
-                    
-                    
-                    
+
+                    } //finmio
                     else if (tabla == res.getString("PIEZA"))
                     {
                         String[] nombreColumnas =
@@ -1199,8 +1194,7 @@ public class FrameCliente extends javax.swing.JFrame
         switch (pestañaSelecionada)
         {
             case 0:
-                //consuFinca();
-                mandaConsultaServidor("SELECT * FROM TFinca;", "PIEZA");
+                consuFinca();
                 break;
             case 1:
                 consuParcela();
@@ -1264,8 +1258,8 @@ public class FrameCliente extends javax.swing.JFrame
     {
         //comprobaciones("SELECT * FROM TFinca;", jtbFinca);
         select = "SELECT * FROM TFinca;";
-	      DefaultTableModel dtm = mandaConsultaServidor(select, "FINCA");
-              jtbFinca.setModel(dtm);
+        DefaultTableModel dtm = mandaConsultaServidor(select, "FINCA");
+        jtbFinca.setModel(dtm);
     }
 
     public void consuParcela()
