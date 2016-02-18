@@ -1,5 +1,4 @@
 package conexion;
-aaaaaaaaaaaaa
 
 
 import com.mysql.jdbc.Statement;

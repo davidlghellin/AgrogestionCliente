@@ -1093,7 +1093,11 @@ public class FrameCliente extends javax.swing.JFrame
                         }
                         
                         
-                    } //finmio
+                    } 
+                    //finmio
+                    
+                    
+                    
                     else if (tabla == res.getString("PIEZA"))
                     {
                         String[] nombreColumnas =
@@ -1258,7 +1262,10 @@ public class FrameCliente extends javax.swing.JFrame
     ///////////////////////////
     public void consuFinca()
     {
-        comprobaciones("SELECT * FROM TFinca;", jtbFinca);
+        //comprobaciones("SELECT * FROM TFinca;", jtbFinca);
+        select = "SELECT * FROM TFinca;";
+	      DefaultTableModel dtm = mandaConsultaServidor(select, "FINCA");
+              jtbFinca.setModel(dtm);
     }
 
     public void consuParcela()
