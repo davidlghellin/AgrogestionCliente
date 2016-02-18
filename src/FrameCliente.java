@@ -70,6 +70,7 @@ public class FrameCliente extends javax.swing.JFrame
         jtfFincaBuscarNombre = new javax.swing.JTextField();
         jtfFincaBuscarLocalizacion = new javax.swing.JTextField();
         jtfFincaBuscarDescripcion = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtbParcela = new javax.swing.JTable();
@@ -222,6 +223,15 @@ public class FrameCliente extends javax.swing.JFrame
 
         jLabel3.setText("Descripción");
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -240,6 +250,8 @@ public class FrameCliente extends javax.swing.JFrame
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jtfFincaBuscarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(158, 158, 158)
+                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -251,11 +263,16 @@ public class FrameCliente extends javax.swing.JFrame
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jtfFincaBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfFincaBuscarLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfFincaBuscarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jtfFincaBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtfFincaBuscarLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtfFincaBuscarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jButton1)))
                 .addContainerGap(221, Short.MAX_VALUE))
         );
 
@@ -915,7 +932,7 @@ public class FrameCliente extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jTabbedPane1StateChanged
         // TODO detectamos que cambiamos de pestaña
         int pestañaSelecionada = ((JTabbedPane) evt.getSource()).getSelectedIndex();
-        actualizarLasPestanyas(pestañaSelecionada);
+       // actualizarLasPestanyas(pestañaSelecionada);
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void cerrandoConexionFrame(java.awt.event.WindowEvent evt)//GEN-FIRST:event_cerrandoConexionFrame
@@ -927,6 +944,11 @@ public class FrameCliente extends javax.swing.JFrame
         {
         }
     }//GEN-LAST:event_cerrandoConexionFrame
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
+    {//GEN-HEADEREND:event_jButton1ActionPerformed
+       mandaConsultaServidor("SELECT * FROM TFinca;", "FINCA");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     //antiguo
     public void miInit()
@@ -996,7 +1018,7 @@ public class FrameCliente extends javax.swing.JFrame
 
                 if (conectadoConServidor)
                 {
-                    actualizarLasPestanyas(jTabbedPane1.getSelectedIndex());
+                   // actualizarLasPestanyas(jTabbedPane1.getSelectedIndex());
                 }
             }
 
@@ -1046,18 +1068,18 @@ public class FrameCliente extends javax.swing.JFrame
             System.out.println(finalizar);
             if (finalizar == false)
             {
-                mensajeServidor = res.getString("CONSULTA");
+                mensajeServidor = ("CONSULTA");
                 paraServidor.writeBytes(mensajeServidor + '\n');
                 mensajeServidor = select;
                 paraServidor.writeBytes(mensajeServidor + '\n');
                 paraServidor.writeBytes(tabla + '\n');
                 System.out.println("Pasaaaaa2");
                 respuestaServidor = delServidor.readLine();
-                if (respuestaServidor.compareToIgnoreCase(res.getString("ERROR_DATOS")) == 0)
+                if (respuestaServidor.compareToIgnoreCase(("ERROR_DATOS")) == 0)
                 {
                     System.out.println("Pasaaaaa3");
                     System.out.println(res.getString("No_se_ha_podido1"));
-                } else if (respuestaServidor.compareToIgnoreCase(res.getString("OK_DATOS")) == 0)
+                } else if (respuestaServidor.compareToIgnoreCase(("OK_DATOS")) == 0)
                 {
                     ObjectInputStream resultadoConsulta = new ObjectInputStream(socketCliente.getInputStream());
                     System.out.println("Pasaaaaa4");
@@ -1071,9 +1093,10 @@ public class FrameCliente extends javax.swing.JFrame
                     }
 
                     ///mio
-                    //parcela
+                    //finca
                     if (tabla == "FINCA")
                     {
+                        System.out.println("Entramos a finca");
                         String[] nombreColumnas =
                         {
                             "Nombre", "Localizacion", "Descripcion"
@@ -1091,97 +1114,16 @@ public class FrameCliente extends javax.swing.JFrame
                             };
                             dtm.addRow(nuevaFila);
                         }
+                        jtbFinca.setModel(dtm);
 
                     } //finmio
-                    else if (tabla == res.getString("PIEZA"))
-                    {
-                        String[] nombreColumnas =
-                        {
-                            res.getString("Codigo"), res.getString(" jLabel6_Text"), res.getString("Precio"), res.getString("Descripcion")
-                        };
-                        dtm = new DefaultTableModel(datos, nombreColumnas);
-                        for (int i = 0; i < numRegistros; i++)
-                        {
-                            String codigo = (String) resultadoConsulta.readObject();
-                            String nombre = (String) resultadoConsulta.readObject();
-                            String precio = (String) resultadoConsulta.readObject();
-//	              int precio = resultadoConsulta.readInt();
-//	              Integer pr = new Integer(precio);
-                            String descripcion = (String) resultadoConsulta.readObject();
-                            Object[] nuevaFila =
-                            {
-                                codigo, nombre, precio, descripcion
-                            };
-                            dtm.addRow(nuevaFila);
-                        }
-                    } else if (tabla == res.getString("PROVEEDOR"))
-                    {
-                        String[] nombreColumnas =
-                        {
-                            res.getString("Codigo"), res.getString(" jLabel6_Text"), res.getString("Apellidos"), res.getString("Direccion"), res.getString("Poblacion"), res.getString("Provincia"), res.getString("Telefono")
-                        };
-                        dtm = new DefaultTableModel(datos, nombreColumnas);
-                        for (int i = 0; i < numRegistros; i++)
-                        {
-                            String codigo = (String) resultadoConsulta.readObject();
-                            String nombre = (String) resultadoConsulta.readObject();
-                            String apellidos = (String) resultadoConsulta.readObject();
-                            String direccion = (String) resultadoConsulta.readObject();
-                            String poblacion = (String) resultadoConsulta.readObject();
-                            String provincia = (String) resultadoConsulta.readObject();
-                            String telefono = (String) resultadoConsulta.readObject();
-                            Object[] nuevaFila =
-                            {
-                                codigo, nombre, apellidos, direccion, poblacion, provincia, telefono
-                            };
-                            dtm.addRow(nuevaFila);
-                        }
-                    } else if (tabla == res.getString("PROYECTO"))
-                    {
-                        String[] nombreColumnas =
-                        {
-                            res.getString("Codigo"), res.getString(" jLabel6_Text"), res.getString("Ciudad"), res.getString("Descripcion")
-                        };
-                        dtm = new DefaultTableModel(datos, nombreColumnas);
-                        for (int i = 0; i < numRegistros; i++)
-                        {
-                            String codigo = (String) resultadoConsulta.readObject();
-                            String nombre = (String) resultadoConsulta.readObject();
-                            String ciudad = (String) resultadoConsulta.readObject();
-                            String descripcion = (String) resultadoConsulta.readObject();
-                            Object[] nuevaFila =
-                            {
-                                codigo, nombre, ciudad, descripcion
-                            };
-                            dtm.addRow(nuevaFila);
-                        }
-                    } else if (tabla == res.getString("GESTION"))
-                    {
-                        String[] nombreColumnas =
-                        {
-                            res.getString("Codigo"), res.getString("Proveedor"), res.getString("Pieza"), res.getString("Proyecto"), res.getString("Cantidad")
-                        };
-                        dtm = new DefaultTableModel(datos, nombreColumnas);
-                        for (int i = 0; i < numRegistros; i++)
-                        {
-                            String codigo = (String) resultadoConsulta.readObject();
-                            String proveedor = (String) resultadoConsulta.readObject();
-                            String pieza = (String) resultadoConsulta.readObject();
-                            String proyecto = (String) resultadoConsulta.readObject();
-                            String cantidad = (String) resultadoConsulta.readObject();
-//	              int cantidad = resultadoConsulta.readInt();
-//	              Integer cant = new Integer(cantidad);
-                            Object[] nuevaFila =
-                            {
-                                codigo, proveedor, pieza, proyecto, cantidad
-                            };
-                            dtm.addRow(nuevaFila);
-                        }
-                    }
+
                 }
             }
         } catch (Exception e)
         {
+            System.err.println("Error en consulat");
+            e.printStackTrace();
             finalizar = true;
         }
         return dtm;
@@ -1194,7 +1136,8 @@ public class FrameCliente extends javax.swing.JFrame
         switch (pestañaSelecionada)
         {
             case 0:
-                consuFinca();
+                //consuFinca();
+                //mandaConsultaServidor("SELECT * FROM TFinca;", "FINCA");
                 break;
             case 1:
                 consuParcela();
@@ -1256,10 +1199,7 @@ public class FrameCliente extends javax.swing.JFrame
     ///////////////////////////
     public void consuFinca()
     {
-        //comprobaciones("SELECT * FROM TFinca;", jtbFinca);
-        select = "SELECT * FROM TFinca;";
-        DefaultTableModel dtm = mandaConsultaServidor(select, "FINCA");
-        jtbFinca.setModel(dtm);
+        comprobaciones("SELECT * FROM TFinca;", jtbFinca);
     }
 
     public void consuParcela()
@@ -1361,6 +1301,7 @@ public class FrameCliente extends javax.swing.JFrame
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConectar;
     private javax.swing.JButton btnDesconectar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox2;
     private javax.swing.JComboBox jComboBox3;
