@@ -1070,7 +1070,31 @@ public class FrameCliente extends javax.swing.JFrame
                         return dtm;
                     }
 
-                    if (tabla == res.getString("PIEZA"))
+                    ///mio
+                    //parcela
+                    if (tabla == "PARCELA")
+                    {
+                        String[] nombreColumnas =
+                        {
+                            "Nombre", "Localizacion", "Descripcion"
+                        };
+                        dtm = new DefaultTableModel(datos, nombreColumnas);
+                        for (int i = 0; i < numRegistros; i++)
+                        {
+                            String nombre = (String) resultadoConsulta.readObject();
+                            String localizacion = (String) resultadoConsulta.readObject();
+                            String descripcion = (String) resultadoConsulta.readObject();
+//	              
+                            Object[] nuevaFila =
+                            {
+                                 nombre, localizacion, descripcion
+                            };
+                            dtm.addRow(nuevaFila);
+                        }
+                        
+                        
+                    } //finmio
+                    else if (tabla == res.getString("PIEZA"))
                     {
                         String[] nombreColumnas =
                         {
