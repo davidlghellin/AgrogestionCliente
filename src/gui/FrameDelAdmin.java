@@ -6,14 +6,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.Date;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,9 +18,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FrameDelAdmin extends javax.swing.JFrame
 {
-
-    //preguntar q es?? TODO
-    static ResourceBundle res;
 
     boolean finalizar = false;
     String mensajeServidor;
@@ -35,15 +28,12 @@ public class FrameDelAdmin extends javax.swing.JFrame
     BufferedReader delServidor;
     String ipServidor;
     boolean conectadoConServidor = false;
-    //frame del login
+    // Frame del login
     Login frameDelLogin;
 
-    //variable para controlar el primer inicio pestaña
+    // Variable para controlar el primer inicio pestaña
     int inicioPestanyas = 0;
 
-    /**
-     * Creates new form FrameCliente
-     */
     public FrameDelAdmin()
     {
         initComponents();
@@ -988,7 +978,6 @@ public class FrameDelAdmin extends javax.swing.JFrame
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt)//GEN-FIRST:event_jTabbedPane1StateChanged
     {//GEN-HEADEREND:event_jTabbedPane1StateChanged
-        // TODO detectamos que cambiamos de pestaña
         int pestañaSelecionada = ((JTabbedPane) evt.getSource()).getSelectedIndex();
 
         // con esto controlamos que no nos de nullpointer ya que lo primero que
@@ -1043,8 +1032,7 @@ public class FrameDelAdmin extends javax.swing.JFrame
             socketCliente = new Socket(frameDelLogin.getIPServidor(), frameDelLogin.getPuertoServidor());
             paraServidor = new DataOutputStream(socketCliente.getOutputStream());
             delServidor = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
-            // Nos aseguramos
-
+            // Establecemos la comunicación con el server
             inicioComunicacionServidor();
 
         } catch (IOException ex)
@@ -1076,15 +1064,11 @@ public class FrameDelAdmin extends javax.swing.JFrame
             {
                 System.out.println("Fallo de conexion. El servidor rechaza la conexion del cliente");
                 finalizar = true;
-            } else if (respuestaServidor.compareToIgnoreCase(("OK_INICIO")) == 0)
+            }
+            else if (respuestaServidor.compareToIgnoreCase(("OK_INICIO")) == 0)
             {
                 System.out.println("Recibido OK_INICIO del servidor");
                 conectadoConServidor = true;
-
-                if (conectadoConServidor)
-                {
-                    // actualizarLasPestanyas(jTabbedPane1.getSelectedIndex());
-                }
             }
 
         } catch (Exception e)
@@ -1121,16 +1105,14 @@ public class FrameDelAdmin extends javax.swing.JFrame
 
     public DefaultTableModel mandaConsultaServidor(String select, String tabla)
     {
-        System.out.println("PAsaaaaa0");
-        System.out.println(finalizar);
+        System.out.println("Pasa por 0: mandaConsultaServidor");
         Object[][] datos =
         {
         };
         DefaultTableModel dtm = null;
         try
         {
-            System.out.println("Pasaaaaa1");
-            System.out.println(finalizar);
+            System.out.println("Pasa por 1: mandaConsultaServidor");
             if (finalizar == false)
             {
                 mensajeServidor = ("CONSULTA");
@@ -1138,17 +1120,17 @@ public class FrameDelAdmin extends javax.swing.JFrame
                 mensajeServidor = select;
                 paraServidor.writeBytes(mensajeServidor + '\n');
                 paraServidor.writeBytes(tabla + '\n');
-                System.out.println("Pasaaaaa2");
+                System.out.println("Pasa por 2: mandaConsultaServidor");
                 respuestaServidor = delServidor.readLine();
                 if (respuestaServidor.compareToIgnoreCase(("ERROR_DATOS")) == 0)
                 {
-                    System.out.println("Pasaaaaa3");
-                    System.out.println(res.getString("No_se_ha_podido1"));
-                } else if (respuestaServidor.compareToIgnoreCase(("OK_DATOS")) == 0)
+                    System.out.println("Pasa por 3: mandaConsultaServidor");
+                    System.out.println(("No_se_ha_podido1"));
+                }
+                else if (respuestaServidor.compareToIgnoreCase(("OK_DATOS")) == 0)
                 {
                     ObjectInputStream resultadoConsulta = new ObjectInputStream(socketCliente.getInputStream());
-                    System.out.println("Pasaaaaa4");
-//	          int numRegistros = Integer.parseInt(resultadoConsulta.readObject().toString());
+                    System.out.println("Pasa por 4: mandaConsultaServidor");
                     Integer nReg = (Integer) resultadoConsulta.readObject();
                     int numRegistros = nReg.intValue();
 
@@ -1161,33 +1143,43 @@ public class FrameDelAdmin extends javax.swing.JFrame
                     if ("FINCA".equals(tabla))
                     {
                         rellenarTablaFinca(datos, dtm, resultadoConsulta, numRegistros);
-                    } else if ("PARCELA".equals(tabla))
+                    }
+                    else if ("PARCELA".equals(tabla))
                     {
                         rellenarTablaParcela(datos, dtm, resultadoConsulta, numRegistros);
-                    } else if ("TIPO".equals(tabla))
+                    }
+                    else if ("TIPO".equals(tabla))
                     {
                         rellenarTablaTipo(datos, dtm, resultadoConsulta, numRegistros);
-                    } else if ("VARIEDAD".equals(tabla))
+                    }
+                    else if ("VARIEDAD".equals(tabla))
                     {
                         rellenarTablaVariedad(datos, dtm, resultadoConsulta, numRegistros);
-                    } else if ("CULTIVAR".equals(tabla))
+                    }
+                    else if ("CULTIVAR".equals(tabla))
                     {
                         rellenarTablaCultivar(datos, dtm, resultadoConsulta, numRegistros);
                     }
+                    else if ("INGRESOVENTA".equals(tabla))
+                    {
+                        rellenarTablaIngresoVenta(datos, dtm, resultadoConsulta, numRegistros);
+                    } else if ("INGRESOOTRO".equals(tabla))
+                    {
+                        rellenarTablaIngresoOtro(datos, dtm, resultadoConsulta, numRegistros);
+                    }
                 }
             }
-        } catch (Exception e)
+        } catch (IOException | ClassNotFoundException e)
         {
-            System.err.println("Error en consulat");
-            e.printStackTrace();
+            System.err.println("Error en consulta");
             finalizar = true;
         }
-        System.out.println("salimos de mandaconsulta");
         return dtm;
     }
 
-    //rellenar tablas
-    //FINCA
+    //////////////////
+    // Rellenar tablas
+    //////////////////
     public void rellenarTablaFinca(Object[][] datos, DefaultTableModel dtm, ObjectInputStream resultadoConsulta, int numRegistros) throws IOException, ClassNotFoundException
     {
         String[] nombreColumnas =
@@ -1279,12 +1271,12 @@ public class FrameDelAdmin extends javax.swing.JFrame
         dtm = new DefaultTableModel(datos, nombreColumnas);
         for (int i = 0; i < numRegistros; i++)
         {
-            String id = (String) resultadoConsulta.readObject();
-            String fechaInicio = (String) resultadoConsulta.readObject();
-            String fechaFin = (String) resultadoConsulta.readObject();
-            String idVariedad = (String) resultadoConsulta.readObject();
-            String idParcela = (String) resultadoConsulta.readObject();
-            String unidades = (String) resultadoConsulta.readObject();
+            Object id = (Object) resultadoConsulta.readObject();
+            Object fechaInicio = (Object) resultadoConsulta.readObject();
+            Object fechaFin = (Object) resultadoConsulta.readObject();
+            Object idVariedad = (Object) resultadoConsulta.readObject();
+            Object idParcela = (Object) resultadoConsulta.readObject();
+            Object unidades = (Object) resultadoConsulta.readObject();
             Object[] nuevaFila =
             {
                 id, fechaInicio, fechaFin, idVariedad, idParcela, unidades
@@ -1294,7 +1286,60 @@ public class FrameDelAdmin extends javax.swing.JFrame
         jtbCultivar.setModel(dtm);
     }
 
-    ///
+    private void rellenarTablaIngresoVenta(Object[][] datos, DefaultTableModel dtm, ObjectInputStream resultadoConsulta, int numRegistros) throws IOException, ClassNotFoundException
+    {
+        String[] nombreColumnas =
+        {
+            "Id", "Fecha", "NombreCliente", "PrecioUnidad", "Cantidad", "Total", "IdCultivar", "Cobrado"
+        };
+        dtm = new DefaultTableModel(datos, nombreColumnas);
+        for (int i = 0; i < numRegistros; i++)
+        {
+            Object id =  resultadoConsulta.readObject();
+            Object fecha = resultadoConsulta.readObject();
+            Object nombre =  resultadoConsulta.readObject();
+            Object precio =  resultadoConsulta.readObject();
+            Object cantidad =  resultadoConsulta.readObject();
+            Object total = resultadoConsulta.readObject();
+            Object idCultivar =  resultadoConsulta.readObject();
+            Object cobrado =  resultadoConsulta.readObject();
+            Object[] nuevaFila =
+            {
+                id, fecha, nombre, precio, cantidad, total, idCultivar, cobrado
+            };
+            dtm.addRow(nuevaFila);
+        }
+        jtbIngresoVenta.setModel(dtm);
+    }
+    private void rellenarTablaIngresoOtro(Object[][] datos, DefaultTableModel dtm, ObjectInputStream resultadoConsulta, int numRegistros) throws IOException, ClassNotFoundException
+    {
+        String[] nombreColumnas =
+        {
+            "Id", "Fecha", "Procedencia", "Descripcion", "Total", "IdCultivar", "Cobrado"
+        };
+        dtm = new DefaultTableModel(datos, nombreColumnas);
+        for (int i = 0; i < numRegistros; i++)
+        {
+            Object id =  resultadoConsulta.readObject();
+            Object fecha = resultadoConsulta.readObject();
+            Object procedencia =  resultadoConsulta.readObject();
+            Object descripcion =  resultadoConsulta.readObject();
+            Object total = resultadoConsulta.readObject();
+            Object idCultivar =  resultadoConsulta.readObject();
+            Object cobrado =  resultadoConsulta.readObject();
+            Object[] nuevaFila =
+            {
+                id, fecha, procedencia, descripcion,  total, idCultivar, cobrado
+            };
+            dtm.addRow(nuevaFila);
+        }
+        jtbIngresoOtro.setModel(dtm);
+    }
+
+    // Cada vez que se cambie de pestaña se actualizará la tabla
+    // puede que no haga falta hacer estas consulta cada vez
+    // TODO preguntar, si sería bueno actualizar todas las jtables y luego cada 
+    // vez que se necesite (pulsar un botón)
     void actualizarLasPestanyas(int pestañaSelecionada)
     {
         System.out.println(pestañaSelecionada);
@@ -1316,39 +1361,23 @@ public class FrameDelAdmin extends javax.swing.JFrame
                 mandaConsultaServidor("SELECT * FROM TCultivar", "CULTIVAR");
                 break;
             case 5:
+                mandaConsultaServidor("SELECT * FROM TIngresoVenta", "INGRESOVENTA");
                 break;
             case 6:
+                mandaConsultaServidor("SELECT * FROM TIngresoOtro", "INGRESOOTRO");
                 break;
             case 7:
+                mandaConsultaServidor("SELECT * FROM TTrabajador", "");
                 break;
             case 8:
+                mandaConsultaServidor("SELECT * FROM TGastosManoObra", "");
                 break;
             case 9:
+                mandaConsultaServidor("SELECT * FROM TGastoProducto", "");
                 break;
             case 10:
+                mandaConsultaServidor("SELECT * FROM TGastoOtro", "");
                 break;
-        }
-    }
-
-    ///////////////////////////
-    ////previo a consultas comprobaciones
-    ///////////////////////////
-    void comprobaciones(String consulta, JTable jtb)
-    {
-        if (conectadoConServidor)
-        {
-            try
-            {
-                jtb = utils.UtilisSql.rellenarJTable(consulta, jtb);
-                // Cantidad de tuplas en el jtable visible
-                lblCantidad.setText("Total de registros: " + jtb.getRowCount());
-            } catch (SQLException ex)
-            {
-                Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (Exception ex)
-            {
-                Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
 

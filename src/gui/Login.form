@@ -49,15 +49,14 @@
                               <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="66" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jtfIP" min="-2" pref="129" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jtfPuerto" alignment="1" min="-2" pref="129" max="-2" attributes="0"/>
-                                  <Component id="jtfUser" alignment="1" min="-2" pref="129" max="-2" attributes="0"/>
-                                  <Component id="jtfPass" alignment="1" min="-2" pref="129" max="-2" attributes="0"/>
-                              </Group>
+                          <EmptySpace pref="50" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jtfIP" pref="129" max="32767" attributes="0"/>
+                              <Component id="jtfPuerto" alignment="0" pref="129" max="32767" attributes="0"/>
+                              <Component id="jtfUser" alignment="0" pref="129" max="32767" attributes="0"/>
+                              <Component id="jtfPass" max="32767" attributes="0"/>
                           </Group>
+                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jButton1" min="-2" max="-2" attributes="0"/>
@@ -65,7 +64,7 @@
                           <Component id="jButton2" min="-2" pref="61" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -154,7 +153,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jtfUser">
         </Component>
-        <Component class="javax.swing.JTextField" name="jtfPass">
+        <Component class="javax.swing.JPasswordField" name="jtfPass">
         </Component>
       </SubComponents>
     </Container>
