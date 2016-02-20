@@ -1,3 +1,4 @@
+package gui;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -5,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -18,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author David López González
  */
-public class FrameCliente extends javax.swing.JFrame
+public class FrameDelAdmin extends javax.swing.JFrame
 {
 
     //preguntar q es?? TODO
@@ -36,18 +38,22 @@ public class FrameCliente extends javax.swing.JFrame
     //frame del login
     Login frameDelLogin;
 
+    //variable para controlar el primer inicio pestaña
+    int inicioPestanyas = 0;
+
     /**
      * Creates new form FrameCliente
      */
-    public FrameCliente()
+    public FrameDelAdmin()
     {
         initComponents();
-        miInit();
+        setLocationRelativeTo(null);
     }
 
-    public FrameCliente(Login frameDelLogin)
+    public FrameDelAdmin(Login frameDelLogin)
     {
         initComponents();
+        setLocationRelativeTo(null);
         this.frameDelLogin = frameDelLogin;
         miInitValores();
     }
@@ -70,7 +76,7 @@ public class FrameCliente extends javax.swing.JFrame
         jtfFincaBuscarNombre = new javax.swing.JTextField();
         jtfFincaBuscarLocalizacion = new javax.swing.JTextField();
         jtfFincaBuscarDescripcion = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnConsuFinca = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtbParcela = new javax.swing.JTable();
@@ -80,6 +86,7 @@ public class FrameCliente extends javax.swing.JFrame
         jtfParcelaBuscarParcela = new javax.swing.JTextField();
         jtfParcelaBuscarFinca = new javax.swing.JTextField();
         jtfParcelaBuscarDescripcion = new javax.swing.JTextField();
+        btnConsuParcela = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jtbTipo = new javax.swing.JTable();
@@ -87,6 +94,7 @@ public class FrameCliente extends javax.swing.JFrame
         jLabel8 = new javax.swing.JLabel();
         jtfTipoBuscarNombre = new javax.swing.JTextField();
         jtfTipoBuscarDescripcion = new javax.swing.JTextField();
+        btnConsuTipoProducto = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtbProducto = new javax.swing.JTable();
@@ -94,6 +102,7 @@ public class FrameCliente extends javax.swing.JFrame
         jLabel10 = new javax.swing.JLabel();
         jtfVariedadBuscarNombre = new javax.swing.JTextField();
         jtfVariedadBuscarTipo = new javax.swing.JTextField();
+        btnConsuVariedad = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jtbCultivar = new javax.swing.JTable();
@@ -113,6 +122,7 @@ public class FrameCliente extends javax.swing.JFrame
         jTextField2 = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         jDateChooser4 = new com.toedter.calendar.JDateChooser();
+        jButton1 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         jtbIngresoVenta = new javax.swing.JTable();
@@ -223,12 +233,12 @@ public class FrameCliente extends javax.swing.JFrame
 
         jLabel3.setText("Descripción");
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
+        btnConsuFinca.setText("Consultar");
+        btnConsuFinca.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton1ActionPerformed(evt);
+                btnConsuFincaActionPerformed(evt);
             }
         });
 
@@ -239,9 +249,10 @@ public class FrameCliente extends javax.swing.JFrame
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 932, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jtfFincaBuscarNombre))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnConsuFinca, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                    .addComponent(jtfFincaBuscarNombre, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -250,8 +261,6 @@ public class FrameCliente extends javax.swing.JFrame
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jtfFincaBuscarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(158, 158, 158)
-                .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -263,17 +272,14 @@ public class FrameCliente extends javax.swing.JFrame
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jtfFincaBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfFincaBuscarLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfFincaBuscarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(jButton1)))
-                .addContainerGap(221, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jtfFincaBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfFincaBuscarLocalizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfFincaBuscarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(btnConsuFinca)
+                .addContainerGap(170, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Finca", jPanel2);
@@ -300,6 +306,15 @@ public class FrameCliente extends javax.swing.JFrame
 
         jLabel6.setText("Descripción");
 
+        btnConsuParcela.setText("Consultar");
+        btnConsuParcela.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnConsuParcelaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -307,19 +322,22 @@ public class FrameCliente extends javax.swing.JFrame
             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 932, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnConsuParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jtfParcelaBuscarParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtfParcelaBuscarFinca)))
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jtfParcelaBuscarParcela, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jtfParcelaBuscarFinca)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jtfParcelaBuscarDescripcion))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(jtfParcelaBuscarDescripcion))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -336,7 +354,9 @@ public class FrameCliente extends javax.swing.JFrame
                     .addComponent(jtfParcelaBuscarParcela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfParcelaBuscarFinca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfParcelaBuscarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 221, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnConsuParcela)
+                .addGap(0, 170, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Parcela", jPanel3);
@@ -361,6 +381,15 @@ public class FrameCliente extends javax.swing.JFrame
 
         jLabel8.setText("Descripción");
 
+        btnConsuTipoProducto.setText("Consultar");
+        btnConsuTipoProducto.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnConsuTipoProductoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -369,6 +398,7 @@ public class FrameCliente extends javax.swing.JFrame
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnConsuTipoProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                     .addComponent(jtfTipoBuscarNombre)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
@@ -389,7 +419,9 @@ public class FrameCliente extends javax.swing.JFrame
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfTipoBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfTipoBuscarDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 221, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnConsuTipoProducto)
+                .addGap(0, 170, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Tipo Producto", jPanel4);
@@ -414,6 +446,15 @@ public class FrameCliente extends javax.swing.JFrame
 
         jLabel10.setText("Tipo");
 
+        btnConsuVariedad.setText("Consultar");
+        btnConsuVariedad.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnConsuVariedadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -422,6 +463,7 @@ public class FrameCliente extends javax.swing.JFrame
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnConsuVariedad, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                     .addComponent(jtfVariedadBuscarNombre)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
@@ -442,7 +484,9 @@ public class FrameCliente extends javax.swing.JFrame
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfVariedadBuscarNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtfVariedadBuscarTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 222, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnConsuVariedad)
+                .addGap(0, 171, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Variedad", jPanel5);
@@ -479,6 +523,15 @@ public class FrameCliente extends javax.swing.JFrame
 
         jLabel18.setText("Después de fecha fin");
 
+        jButton1.setText("Consultar");
+        jButton1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -486,31 +539,34 @@ public class FrameCliente extends javax.swing.JFrame
             .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 932, Short.MAX_VALUE)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jDateChooser3, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jDateChooser4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(24, 24, 24)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jTextField3))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jTextField4))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField2))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDateChooser3, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(jDateChooser4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(jTextField3))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(jTextField4))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(jTextField1)
+                            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField2)))
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -544,7 +600,9 @@ public class FrameCliente extends javax.swing.JFrame
                     .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jDateChooser4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 131, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addGap(0, 80, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Cultivar", jPanel6);
@@ -932,7 +990,15 @@ public class FrameCliente extends javax.swing.JFrame
     {//GEN-HEADEREND:event_jTabbedPane1StateChanged
         // TODO detectamos que cambiamos de pestaña
         int pestañaSelecionada = ((JTabbedPane) evt.getSource()).getSelectedIndex();
-       // actualizarLasPestanyas(pestañaSelecionada);
+
+        // con esto controlamos que no nos de nullpointer ya que lo primero que
+        // hace es cargar el jpanel y el tab correspondiente, así al pasar de una
+        // tab a otra se refresca automáticamente
+        if (inicioPestanyas > 0)
+        {
+            actualizarLasPestanyas(pestañaSelecionada);
+        }
+        inicioPestanyas++;
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void cerrandoConexionFrame(java.awt.event.WindowEvent evt)//GEN-FIRST:event_cerrandoConexionFrame
@@ -945,31 +1011,30 @@ public class FrameCliente extends javax.swing.JFrame
         }
     }//GEN-LAST:event_cerrandoConexionFrame
 
+    private void btnConsuFincaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnConsuFincaActionPerformed
+    {//GEN-HEADEREND:event_btnConsuFincaActionPerformed
+        mandaConsultaServidor("SELECT * FROM TFinca;", "FINCA");
+    }//GEN-LAST:event_btnConsuFincaActionPerformed
+
+    private void btnConsuParcelaActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnConsuParcelaActionPerformed
+    {//GEN-HEADEREND:event_btnConsuParcelaActionPerformed
+        mandaConsultaServidor("SELECT * FROM TParcela", "PARCELA");
+    }//GEN-LAST:event_btnConsuParcelaActionPerformed
+
+    private void btnConsuTipoProductoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnConsuTipoProductoActionPerformed
+    {//GEN-HEADEREND:event_btnConsuTipoProductoActionPerformed
+        mandaConsultaServidor("SELECT * FROM TTipo", "TIPO");
+    }//GEN-LAST:event_btnConsuTipoProductoActionPerformed
+
+    private void btnConsuVariedadActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnConsuVariedadActionPerformed
+    {//GEN-HEADEREND:event_btnConsuVariedadActionPerformed
+        mandaConsultaServidor("SELECT * FROM TVariedad", "VARIEDAD");
+    }//GEN-LAST:event_btnConsuVariedadActionPerformed
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
-       mandaConsultaServidor("SELECT * FROM TFinca;", "FINCA");
+        mandaConsultaServidor("SELECT * FROM TCultivar", "CULTIVAR");
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    //antiguo
-    public void miInit()
-    {
-        Login frameLogin = new Login();
-        //  con.setSize(new Dimension(350, 200));
-        frameLogin.setLocation(300, 300);
-        frameLogin.setVisible(true);
-
-        try
-        {
-            //
-            socketCliente = new Socket(frameLogin.getIPServidor(), frameLogin.getPuertoServidor());
-            paraServidor = new DataOutputStream(socketCliente.getOutputStream());
-            delServidor = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
-
-        } catch (Exception e)
-        {
-            System.err.println("err");
-        }
-    }
 
     public void miInitValores()
     {
@@ -978,13 +1043,13 @@ public class FrameCliente extends javax.swing.JFrame
             socketCliente = new Socket(frameDelLogin.getIPServidor(), frameDelLogin.getPuertoServidor());
             paraServidor = new DataOutputStream(socketCliente.getOutputStream());
             delServidor = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
-            if (!conectadoConServidor)
-            {
-                inicioComunicacionServidor();
-            }
+            // Nos aseguramos
+
+            inicioComunicacionServidor();
+
         } catch (IOException ex)
         {
-            Logger.getLogger(FrameCliente.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1018,7 +1083,7 @@ public class FrameCliente extends javax.swing.JFrame
 
                 if (conectadoConServidor)
                 {
-                   // actualizarLasPestanyas(jTabbedPane1.getSelectedIndex());
+                    // actualizarLasPestanyas(jTabbedPane1.getSelectedIndex());
                 }
             }
 
@@ -1050,7 +1115,7 @@ public class FrameCliente extends javax.swing.JFrame
 
         } catch (IOException ex)
         {
-            Logger.getLogger(FrameCliente.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -1092,32 +1157,23 @@ public class FrameCliente extends javax.swing.JFrame
                         return dtm;
                     }
 
-                    ///mio
-                    //finca
-                    if (tabla == "FINCA")
+                    // Enviamos al server la correspondiente consulta
+                    if ("FINCA".equals(tabla))
                     {
-                        System.out.println("Entramos a finca");
-                        String[] nombreColumnas =
-                        {
-                            "Nombre", "Localizacion", "Descripcion"
-                        };
-                        dtm = new DefaultTableModel(datos, nombreColumnas);
-                        for (int i = 0; i < numRegistros; i++)
-                        {
-                            String nombre = (String) resultadoConsulta.readObject();
-                            String localizacion = (String) resultadoConsulta.readObject();
-                            String descripcion = (String) resultadoConsulta.readObject();
-//	              
-                            Object[] nuevaFila =
-                            {
-                                nombre, localizacion, descripcion
-                            };
-                            dtm.addRow(nuevaFila);
-                        }
-                        jtbFinca.setModel(dtm);
-
-                    } //finmio
-
+                        rellenarTablaFinca(datos, dtm, resultadoConsulta, numRegistros);
+                    } else if ("PARCELA".equals(tabla))
+                    {
+                        rellenarTablaParcela(datos, dtm, resultadoConsulta, numRegistros);
+                    } else if ("TIPO".equals(tabla))
+                    {
+                        rellenarTablaTipo(datos, dtm, resultadoConsulta, numRegistros);
+                    } else if ("VARIEDAD".equals(tabla))
+                    {
+                        rellenarTablaVariedad(datos, dtm, resultadoConsulta, numRegistros);
+                    } else if ("CULTIVAR".equals(tabla))
+                    {
+                        rellenarTablaCultivar(datos, dtm, resultadoConsulta, numRegistros);
+                    }
                 }
             }
         } catch (Exception e)
@@ -1126,7 +1182,116 @@ public class FrameCliente extends javax.swing.JFrame
             e.printStackTrace();
             finalizar = true;
         }
+        System.out.println("salimos de mandaconsulta");
         return dtm;
+    }
+
+    //rellenar tablas
+    //FINCA
+    public void rellenarTablaFinca(Object[][] datos, DefaultTableModel dtm, ObjectInputStream resultadoConsulta, int numRegistros) throws IOException, ClassNotFoundException
+    {
+        String[] nombreColumnas =
+        {
+            "Nombre", "Localizacion", "Descripcion"
+        };
+        dtm = new DefaultTableModel(datos, nombreColumnas);
+        for (int i = 0; i < numRegistros; i++)
+        {
+            String nombre = (String) resultadoConsulta.readObject();
+            String localizacion = (String) resultadoConsulta.readObject();
+            String descripcion = (String) resultadoConsulta.readObject();
+            Object[] nuevaFila =
+            {
+                nombre, localizacion, descripcion
+            };
+            dtm.addRow(nuevaFila);
+        }
+        jtbFinca.setModel(dtm);
+    }
+
+    public void rellenarTablaParcela(Object[][] datos, DefaultTableModel dtm, ObjectInputStream resultadoConsulta, int numRegistros) throws IOException, ClassNotFoundException
+    {
+        String[] nombreColumnas =
+        {
+            "IdParcela", "IdFinca", "Descripcion"
+        };
+        dtm = new DefaultTableModel(datos, nombreColumnas);
+        for (int i = 0; i < numRegistros; i++)
+        {
+            String idParcela = (String) resultadoConsulta.readObject();
+            String idFinca = (String) resultadoConsulta.readObject();
+            String descripcion = (String) resultadoConsulta.readObject();
+            Object[] nuevaFila =
+            {
+                idParcela, idFinca, descripcion
+            };
+            dtm.addRow(nuevaFila);
+        }
+        jtbParcela.setModel(dtm);
+    }
+
+    public void rellenarTablaTipo(Object[][] datos, DefaultTableModel dtm, ObjectInputStream resultadoConsulta, int numRegistros) throws IOException, ClassNotFoundException
+    {
+        String[] nombreColumnas =
+        {
+            "Nombre", "Descripcion"
+        };
+        dtm = new DefaultTableModel(datos, nombreColumnas);
+        for (int i = 0; i < numRegistros; i++)
+        {
+            String nombre = (String) resultadoConsulta.readObject();
+            String descripcion = (String) resultadoConsulta.readObject();
+            Object[] nuevaFila =
+            {
+                nombre, descripcion
+            };
+            dtm.addRow(nuevaFila);
+        }
+        jtbTipo.setModel(dtm);
+    }
+
+    private void rellenarTablaVariedad(Object[][] datos, DefaultTableModel dtm, ObjectInputStream resultadoConsulta, int numRegistros) throws IOException, ClassNotFoundException
+    {
+        String[] nombreColumnas =
+        {
+            "Nombre", "IdTipo"
+        };
+        dtm = new DefaultTableModel(datos, nombreColumnas);
+        for (int i = 0; i < numRegistros; i++)
+        {
+            String nombre = (String) resultadoConsulta.readObject();
+            String idTipo = (String) resultadoConsulta.readObject();
+            Object[] nuevaFila =
+            {
+                nombre, idTipo
+            };
+            dtm.addRow(nuevaFila);
+        }
+        jtbProducto.setModel(dtm);
+    }
+
+    private void rellenarTablaCultivar(Object[][] datos, DefaultTableModel dtm, ObjectInputStream resultadoConsulta, int numRegistros) throws IOException, ClassNotFoundException
+    {
+        String[] nombreColumnas =
+        {
+            "Id", "FechaInicio", "FechaFin", "IdVariedad", "IdParcela", "Unidades"
+        };
+        dtm = new DefaultTableModel(datos, nombreColumnas);
+        for (int i = 0; i < numRegistros; i++)
+        {
+            String id = (String) resultadoConsulta.readObject();
+            String fechaInicio = (String) resultadoConsulta.readObject();
+            String fechaFin = (String) resultadoConsulta.readObject();
+            String idVariedad = (String) resultadoConsulta.readObject();
+            String idParcela = (String) resultadoConsulta.readObject();
+            String unidades = (String) resultadoConsulta.readObject();
+            Object[] nuevaFila =
+            {
+                id, fechaInicio, fechaFin, idVariedad, idParcela, unidades
+            };
+            dtm.addRow(nuevaFila);
+        }
+        jtbCultivar.setModel(dtm);
     }
 
     ///
@@ -1136,38 +1301,31 @@ public class FrameCliente extends javax.swing.JFrame
         switch (pestañaSelecionada)
         {
             case 0:
-                //consuFinca();
-                //mandaConsultaServidor("SELECT * FROM TFinca;", "FINCA");
+                mandaConsultaServidor("SELECT * FROM TFinca;", "FINCA");
                 break;
             case 1:
-                consuParcela();
+                mandaConsultaServidor("SELECT * FROM TParcela", "PARCELA");
                 break;
             case 2:
-                consuTipoProducto();
+                mandaConsultaServidor("SELECT * FROM TTipo", "TIPO");
                 break;
             case 3:
-                consuVariedad();
+                mandaConsultaServidor("SELECT * FROM TVariedad", "VARIEDAD");
                 break;
             case 4:
-                consuCultivar();
+                mandaConsultaServidor("SELECT * FROM TCultivar", "CULTIVAR");
                 break;
             case 5:
-                consuIngresoVenta();
                 break;
             case 6:
-                consuIngresoOtro();
                 break;
             case 7:
-                consuTrabajador();
                 break;
             case 8:
-                consuGastoMObra();
                 break;
             case 9:
-                consuGastoProducto();
                 break;
             case 10:
-                consuGastoOtro();
                 break;
         }
     }
@@ -1186,70 +1344,12 @@ public class FrameCliente extends javax.swing.JFrame
                 lblCantidad.setText("Total de registros: " + jtb.getRowCount());
             } catch (SQLException ex)
             {
-                Logger.getLogger(FrameCliente.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
             } catch (Exception ex)
             {
-                Logger.getLogger(FrameCliente.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-
-    ///////////////////////////
-    ///consultas y table
-    ///////////////////////////
-    public void consuFinca()
-    {
-        comprobaciones("SELECT * FROM TFinca;", jtbFinca);
-    }
-
-    public void consuParcela()
-    {
-        comprobaciones("SELECT * FROM TParcela;", jtbParcela);
-    }
-
-    public void consuTipoProducto()
-    {
-        comprobaciones("SELECT * FROM TTipo;", jtbTipo);
-    }
-
-    public void consuVariedad()
-    {
-        comprobaciones("SELECT * FROM TVariedad;", jtbProducto);
-    }
-
-    private void consuCultivar()
-    {
-        comprobaciones("SELECT * FROM TCultivar;", jtbCultivar);
-    }
-
-    private void consuIngresoVenta()
-    {
-        comprobaciones("SELECT * FROM TIngresoVenta;", jtbIngresoVenta);
-    }
-
-    private void consuIngresoOtro()
-    {
-        comprobaciones("SELECT * FROM TIngresoOtro;", jtbIngresoOtro);
-    }
-
-    private void consuTrabajador()
-    {
-        comprobaciones("SELECT * FROM TTrabajador;", jtbTrabajador);
-    }
-
-    private void consuGastoMObra()
-    {
-        comprobaciones("SELECT * FROM TGastosManoObra;", jtbGastosManoObra);
-    }
-
-    private void consuGastoProducto()
-    {
-        comprobaciones("SELECT * FROM TGastoProducto;", jtbGastoProducto);
-    }
-
-    private void consuGastoOtro()
-    {
-        comprobaciones("SELECT * FROM TGastoOtro;", jtbGastoOtro);
     }
 
     /**
@@ -1274,17 +1374,19 @@ public class FrameCliente extends javax.swing.JFrame
             }
         } catch (ClassNotFoundException ex)
         {
-            java.util.logging.Logger.getLogger(FrameCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameDelAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex)
         {
-            java.util.logging.Logger.getLogger(FrameCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameDelAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex)
         {
-            java.util.logging.Logger.getLogger(FrameCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameDelAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex)
         {
-            java.util.logging.Logger.getLogger(FrameCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameDelAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
@@ -1293,13 +1395,17 @@ public class FrameCliente extends javax.swing.JFrame
         {
             public void run()
             {
-                new FrameCliente().setVisible(true);
+                new FrameDelAdmin().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConectar;
+    private javax.swing.JButton btnConsuFinca;
+    private javax.swing.JButton btnConsuParcela;
+    private javax.swing.JButton btnConsuTipoProducto;
+    private javax.swing.JButton btnConsuVariedad;
     private javax.swing.JButton btnDesconectar;
     private javax.swing.JButton jButton1;
     private javax.swing.JComboBox jComboBox1;

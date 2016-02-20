@@ -1,3 +1,4 @@
+package gui;
 
 import java.awt.event.ActionEvent;
 
@@ -19,7 +20,7 @@ public class Login extends javax.swing.JFrame
     public Login()
     {
         initComponents();
-
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -175,7 +176,7 @@ public class Login extends javax.swing.JFrame
             user = jtfUser.getText();
             pass = jtfPass.getText();
             //lanzamos el frame
-            new FrameCliente(this).setVisible(true);
+            new FrameDelAdmin(this).setVisible(true);
         } catch (Exception ex)
         {
         }
@@ -194,7 +195,7 @@ public class Login extends javax.swing.JFrame
     {
         return puertoServidor;
     }
-    
+
     public String getUser()
     {
         return user;
