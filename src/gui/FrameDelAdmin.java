@@ -1163,7 +1163,8 @@ public class FrameDelAdmin extends javax.swing.JFrame
                     else if ("INGRESOVENTA".equals(tabla))
                     {
                         rellenarTablaIngresoVenta(datos, dtm, resultadoConsulta, numRegistros);
-                    } else if ("INGRESOOTRO".equals(tabla))
+                    }
+                    else if ("INGRESOOTRO".equals(tabla))
                     {
                         rellenarTablaIngresoOtro(datos, dtm, resultadoConsulta, numRegistros);
                     }
@@ -1189,13 +1190,18 @@ public class FrameDelAdmin extends javax.swing.JFrame
         dtm = new DefaultTableModel(datos, nombreColumnas);
         for (int i = 0; i < numRegistros; i++)
         {
-            String nombre = (String) resultadoConsulta.readObject();
-            String localizacion = (String) resultadoConsulta.readObject();
-            String descripcion = (String) resultadoConsulta.readObject();
-            Object[] nuevaFila =
+            /*String nombre = (String) resultadoConsulta.readObject();
+             String localizacion = (String) resultadoConsulta.readObject();
+             String descripcion = (String) resultadoConsulta.readObject();
+             Object[] nuevaFila =
+             {
+             nombre, localizacion, descripcion
+             };*/
+            Object[] nuevaFila = new Object[nombreColumnas.length];
+            for (int j = 0; j < nuevaFila.length; j++)
             {
-                nombre, localizacion, descripcion
-            };
+                nuevaFila[j] = (Object) resultadoConsulta.readObject();
+            }
             dtm.addRow(nuevaFila);
         }
         jtbFinca.setModel(dtm);
@@ -1210,13 +1216,18 @@ public class FrameDelAdmin extends javax.swing.JFrame
         dtm = new DefaultTableModel(datos, nombreColumnas);
         for (int i = 0; i < numRegistros; i++)
         {
-            String idParcela = (String) resultadoConsulta.readObject();
-            String idFinca = (String) resultadoConsulta.readObject();
-            String descripcion = (String) resultadoConsulta.readObject();
-            Object[] nuevaFila =
+            /*String idParcela = (String) resultadoConsulta.readObject();
+             String idFinca = (String) resultadoConsulta.readObject();
+             String descripcion = (String) resultadoConsulta.readObject();
+             Object[] nuevaFila =
+             {
+             idParcela, idFinca, descripcion
+             };*/
+            Object[] nuevaFila = new Object[nombreColumnas.length];
+            for (int j = 0; j < nuevaFila.length; j++)
             {
-                idParcela, idFinca, descripcion
-            };
+                nuevaFila[j] = (Object) resultadoConsulta.readObject();
+            }
             dtm.addRow(nuevaFila);
         }
         jtbParcela.setModel(dtm);
@@ -1231,12 +1242,17 @@ public class FrameDelAdmin extends javax.swing.JFrame
         dtm = new DefaultTableModel(datos, nombreColumnas);
         for (int i = 0; i < numRegistros; i++)
         {
-            String nombre = (String) resultadoConsulta.readObject();
-            String descripcion = (String) resultadoConsulta.readObject();
-            Object[] nuevaFila =
+            /*  String nombre = (String) resultadoConsulta.readObject();
+             String descripcion = (String) resultadoConsulta.readObject();
+             Object[] nuevaFila =
+             {
+             nombre, descripcion
+             };*/
+            Object[] nuevaFila = new Object[nombreColumnas.length];
+            for (int j = 0; j < nuevaFila.length; j++)
             {
-                nombre, descripcion
-            };
+                nuevaFila[j] = (Object) resultadoConsulta.readObject();
+            }
             dtm.addRow(nuevaFila);
         }
         jtbTipo.setModel(dtm);
@@ -1251,12 +1267,17 @@ public class FrameDelAdmin extends javax.swing.JFrame
         dtm = new DefaultTableModel(datos, nombreColumnas);
         for (int i = 0; i < numRegistros; i++)
         {
-            String nombre = (String) resultadoConsulta.readObject();
-            String idTipo = (String) resultadoConsulta.readObject();
-            Object[] nuevaFila =
+            /* String nombre = (String) resultadoConsulta.readObject();
+             String idTipo = (String) resultadoConsulta.readObject();
+             Object[] nuevaFila =
+             {
+             nombre, idTipo
+             };*/
+            Object[] nuevaFila = new Object[nombreColumnas.length];
+            for (int j = 0; j < nuevaFila.length; j++)
             {
-                nombre, idTipo
-            };
+                nuevaFila[j] = (Object) resultadoConsulta.readObject();
+            }
             dtm.addRow(nuevaFila);
         }
         jtbProducto.setModel(dtm);
@@ -1271,16 +1292,21 @@ public class FrameDelAdmin extends javax.swing.JFrame
         dtm = new DefaultTableModel(datos, nombreColumnas);
         for (int i = 0; i < numRegistros; i++)
         {
-            Object id = (Object) resultadoConsulta.readObject();
-            Object fechaInicio = (Object) resultadoConsulta.readObject();
-            Object fechaFin = (Object) resultadoConsulta.readObject();
-            Object idVariedad = (Object) resultadoConsulta.readObject();
-            Object idParcela = (Object) resultadoConsulta.readObject();
-            Object unidades = (Object) resultadoConsulta.readObject();
-            Object[] nuevaFila =
+            /* Object id = (Object) resultadoConsulta.readObject();
+             Object fechaInicio = (Object) resultadoConsulta.readObject();
+             Object fechaFin = (Object) resultadoConsulta.readObject();
+             Object idVariedad = (Object) resultadoConsulta.readObject();
+             Object idParcela = (Object) resultadoConsulta.readObject();
+             Object unidades = (Object) resultadoConsulta.readObject();
+             Object[] nuevaFila =
+             {
+             id, fechaInicio, fechaFin, idVariedad, idParcela, unidades
+             };*/
+            Object[] nuevaFila = new Object[nombreColumnas.length];
+            for (int j = 0; j < nuevaFila.length; j++)
             {
-                id, fechaInicio, fechaFin, idVariedad, idParcela, unidades
-            };
+                nuevaFila[j] = (Object) resultadoConsulta.readObject();
+            }
             dtm.addRow(nuevaFila);
         }
         jtbCultivar.setModel(dtm);
@@ -1295,22 +1321,28 @@ public class FrameDelAdmin extends javax.swing.JFrame
         dtm = new DefaultTableModel(datos, nombreColumnas);
         for (int i = 0; i < numRegistros; i++)
         {
-            Object id =  resultadoConsulta.readObject();
-            Object fecha = resultadoConsulta.readObject();
-            Object nombre =  resultadoConsulta.readObject();
-            Object precio =  resultadoConsulta.readObject();
-            Object cantidad =  resultadoConsulta.readObject();
-            Object total = resultadoConsulta.readObject();
-            Object idCultivar =  resultadoConsulta.readObject();
-            Object cobrado =  resultadoConsulta.readObject();
-            Object[] nuevaFila =
+            /*Object id = resultadoConsulta.readObject();
+             Object fecha = resultadoConsulta.readObject();
+             Object nombre = resultadoConsulta.readObject();
+             Object precio = resultadoConsulta.readObject();
+             Object cantidad = resultadoConsulta.readObject();
+             Object total = resultadoConsulta.readObject();
+             Object idCultivar = resultadoConsulta.readObject();
+             Object cobrado = resultadoConsulta.readObject();
+             Object[] nuevaFila =
+             {
+             id, fecha, nombre, precio, cantidad, total, idCultivar, cobrado
+             };*/
+            Object[] nuevaFila = new Object[nombreColumnas.length];
+            for (int j = 0; j < nuevaFila.length; j++)
             {
-                id, fecha, nombre, precio, cantidad, total, idCultivar, cobrado
-            };
+                nuevaFila[j] = (Object) resultadoConsulta.readObject();
+            }
             dtm.addRow(nuevaFila);
         }
         jtbIngresoVenta.setModel(dtm);
     }
+
     private void rellenarTablaIngresoOtro(Object[][] datos, DefaultTableModel dtm, ObjectInputStream resultadoConsulta, int numRegistros) throws IOException, ClassNotFoundException
     {
         String[] nombreColumnas =
@@ -1320,17 +1352,22 @@ public class FrameDelAdmin extends javax.swing.JFrame
         dtm = new DefaultTableModel(datos, nombreColumnas);
         for (int i = 0; i < numRegistros; i++)
         {
-            Object id =  resultadoConsulta.readObject();
-            Object fecha = resultadoConsulta.readObject();
-            Object procedencia =  resultadoConsulta.readObject();
-            Object descripcion =  resultadoConsulta.readObject();
-            Object total = resultadoConsulta.readObject();
-            Object idCultivar =  resultadoConsulta.readObject();
-            Object cobrado =  resultadoConsulta.readObject();
-            Object[] nuevaFila =
+            /* Object id = resultadoConsulta.readObject();
+             Object fecha = resultadoConsulta.readObject();
+             Object procedencia = resultadoConsulta.readObject();
+             Object descripcion = resultadoConsulta.readObject();
+             Object total = resultadoConsulta.readObject();
+             Object idCultivar = resultadoConsulta.readObject();
+             Object cobrado = resultadoConsulta.readObject();
+             Object[] nuevaFila =
+             {
+             id, fecha, procedencia, descripcion, total, idCultivar, cobrado
+             };*/
+            Object[] nuevaFila = new Object[nombreColumnas.length];
+            for (int j = 0; j < nuevaFila.length; j++)
             {
-                id, fecha, procedencia, descripcion,  total, idCultivar, cobrado
-            };
+                nuevaFila[j] = (Object) resultadoConsulta.readObject();
+            }
             dtm.addRow(nuevaFila);
         }
         jtbIngresoOtro.setModel(dtm);
