@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.net.Socket;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,20 +29,19 @@ public class Login extends javax.swing.JFrame
      */
     private String pass;
 
-    
     public Login()
     {
         initComponents();
         setLocationRelativeTo(null);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents()
     {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnConectar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -54,12 +55,12 @@ public class Login extends javax.swing.JFrame
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login Agrogestión");
 
-        jButton1.setText("Aceptar");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
+        btnConectar.setText("Aceptar");
+        btnConectar.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton1ActionPerformed(evt);
+                btnConectarActionPerformed(evt);
             }
         });
 
@@ -91,6 +92,14 @@ public class Login extends javax.swing.JFrame
             }
         });
 
+        jtfPass.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt)
+            {
+                jtfPassKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -112,7 +121,7 @@ public class Login extends javax.swing.JFrame
                             .addComponent(jtfPass))
                         .addGap(16, 16, 16))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btnConectar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -138,7 +147,7 @@ public class Login extends javax.swing.JFrame
                     .addComponent(jtfPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(btnConectar)
                     .addComponent(jButton2))
                 .addContainerGap())
         );
@@ -157,10 +166,10 @@ public class Login extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
+    private void btnConectarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnConectarActionPerformed
+    {//GEN-HEADEREND:event_btnConectarActionPerformed
         ConectarServidor(evt);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnConectarActionPerformed
 
     private void jtfPuertoActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jtfPuertoActionPerformed
     {//GEN-HEADEREND:event_jtfPuertoActionPerformed
@@ -172,6 +181,14 @@ public class Login extends javax.swing.JFrame
         System.exit(1);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jtfPassKeyPressed(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfPassKeyPressed
+    {//GEN-HEADEREND:event_jtfPassKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            ConectarServidor(null);
+        }
+    }//GEN-LAST:event_jtfPassKeyPressed
+
     //Establece la IP del servidor al que conectarnos
     void ConectarServidor(ActionEvent e)
     {
@@ -182,14 +199,16 @@ public class Login extends javax.swing.JFrame
             user = jtfUser.getText();
             pass = jtfPass.getText();
             //lanzamos el frame
-            new FrameDelAdmin(this).setVisible(true);
+            Socket socketCliente = new Socket(ipServidor, puertoServidor);
+            // new FrameDelAdmin(this).setVisible(true);
+            new FrameDelAdmin(socketCliente, user, pass).setVisible(true);
             this.dispose();
         } catch (Exception ex)
         {
             JOptionPane.showMessageDialog(this.getParent(), "Error de conexión IP o puerto");
             //System.exit(1);
         }
-        
+
     }
 
     //Devuelve la IP a la que nos queremos conectar
@@ -266,7 +285,7 @@ public class Login extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnConectar;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
