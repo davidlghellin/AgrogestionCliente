@@ -64,9 +64,9 @@
                   <Component id="jTabbedPane1" max="32767" attributes="0"/>
                   <EmptySpace min="26" pref="26" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnDesconectar" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnConectar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="btnConectar" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnDesconectar" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="lblCantidad" alignment="1" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
@@ -193,10 +193,19 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfFincaBuscarNombre">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfFincaBuscarNombreKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfFincaBuscarLocalizacion">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfFincaBuscarLocalizacionKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfFincaBuscarDescripcion">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfFincaBuscarDescripcionKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnConsuFinca">
                   <Properties>
@@ -308,10 +317,19 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfParcelaBuscarParcela">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfParcelaBuscarParcelaKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfParcelaBuscarFinca">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfParcelaBuscarFincaKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfParcelaBuscarDescripcion">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfParcelaBuscarDescripcionKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnConsuParcela">
                   <Properties>
@@ -404,8 +422,14 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfTipoBuscarNombre">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfTipoBuscarNombreKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfTipoBuscarDescripcion">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfTipoBuscarDescripcionKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnConsuTipoProducto">
                   <Properties>
@@ -498,8 +522,14 @@
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfVariedadBuscarNombre">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfVariedadBuscarNombreKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jtfVariedadBuscarTipo">
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jtfVariedadBuscarTipoKeyReleased"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JButton" name="btnConsuVariedad">
                   <Properties>

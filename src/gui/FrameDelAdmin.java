@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,6 +26,8 @@ public class FrameDelAdmin extends javax.swing.JFrame
     String select;
     String respuestaServidor;
     Socket socketCliente;
+    String user;
+    String pass;
     DataOutputStream paraServidor;
     BufferedReader delServidor;
     String ipServidor;
@@ -45,6 +49,16 @@ public class FrameDelAdmin extends javax.swing.JFrame
         initComponents();
         setLocationRelativeTo(null);
         this.frameDelLogin = frameDelLogin;
+        miInitValores();
+    }
+
+    public FrameDelAdmin(Socket socketCliente, String user, String pass)
+    {
+        initComponents();
+        setLocationRelativeTo(null);
+        this.socketCliente = socketCliente;
+        this.user = user;
+        this.pass = pass;
         miInitValores();
     }
 
@@ -223,6 +237,30 @@ public class FrameDelAdmin extends javax.swing.JFrame
 
         jLabel3.setText("Descripción");
 
+        jtfFincaBuscarNombre.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jtfFincaBuscarNombreKeyReleased(evt);
+            }
+        });
+
+        jtfFincaBuscarLocalizacion.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jtfFincaBuscarLocalizacionKeyReleased(evt);
+            }
+        });
+
+        jtfFincaBuscarDescripcion.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jtfFincaBuscarDescripcionKeyReleased(evt);
+            }
+        });
+
         btnConsuFinca.setText("Consultar");
         btnConsuFinca.addActionListener(new java.awt.event.ActionListener()
         {
@@ -295,6 +333,30 @@ public class FrameDelAdmin extends javax.swing.JFrame
         jLabel5.setText("Finca");
 
         jLabel6.setText("Descripción");
+
+        jtfParcelaBuscarParcela.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jtfParcelaBuscarParcelaKeyReleased(evt);
+            }
+        });
+
+        jtfParcelaBuscarFinca.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jtfParcelaBuscarFincaKeyReleased(evt);
+            }
+        });
+
+        jtfParcelaBuscarDescripcion.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jtfParcelaBuscarDescripcionKeyReleased(evt);
+            }
+        });
 
         btnConsuParcela.setText("Consultar");
         btnConsuParcela.addActionListener(new java.awt.event.ActionListener()
@@ -371,6 +433,22 @@ public class FrameDelAdmin extends javax.swing.JFrame
 
         jLabel8.setText("Descripción");
 
+        jtfTipoBuscarNombre.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jtfTipoBuscarNombreKeyReleased(evt);
+            }
+        });
+
+        jtfTipoBuscarDescripcion.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jtfTipoBuscarDescripcionKeyReleased(evt);
+            }
+        });
+
         btnConsuTipoProducto.setText("Consultar");
         btnConsuTipoProducto.addActionListener(new java.awt.event.ActionListener()
         {
@@ -435,6 +513,22 @@ public class FrameDelAdmin extends javax.swing.JFrame
         jLabel9.setText("Nombre");
 
         jLabel10.setText("Tipo");
+
+        jtfVariedadBuscarNombre.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jtfVariedadBuscarNombreKeyReleased(evt);
+            }
+        });
+
+        jtfVariedadBuscarTipo.addKeyListener(new java.awt.event.KeyAdapter()
+        {
+            public void keyReleased(java.awt.event.KeyEvent evt)
+            {
+                jtfVariedadBuscarTipoKeyReleased(evt);
+            }
+        });
 
         btnConsuVariedad.setText("Consultar");
         btnConsuVariedad.addActionListener(new java.awt.event.ActionListener()
@@ -936,9 +1030,9 @@ public class FrameDelAdmin extends javax.swing.JFrame
                 .addComponent(jTabbedPane1)
                 .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnDesconectar)
-                        .addComponent(btnConectar))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(btnConectar, javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btnDesconectar))
                     .addComponent(lblCantidad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -1025,11 +1119,157 @@ public class FrameDelAdmin extends javax.swing.JFrame
         mandaConsultaServidor("SELECT * FROM TCultivar", "CULTIVAR");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jtfFincaBuscarNombreKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfFincaBuscarNombreKeyReleased
+    {//GEN-HEADEREND:event_jtfFincaBuscarNombreKeyReleased
+        try
+        {
+            buscarFiltroFinca();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jtfFincaBuscarNombreKeyReleased
+
+    private void jtfFincaBuscarLocalizacionKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfFincaBuscarLocalizacionKeyReleased
+    {//GEN-HEADEREND:event_jtfFincaBuscarLocalizacionKeyReleased
+        try
+        {
+            buscarFiltroFinca();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jtfFincaBuscarLocalizacionKeyReleased
+
+    private void jtfFincaBuscarDescripcionKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfFincaBuscarDescripcionKeyReleased
+    {//GEN-HEADEREND:event_jtfFincaBuscarDescripcionKeyReleased
+        try
+        {
+            buscarFiltroFinca();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jtfFincaBuscarDescripcionKeyReleased
+
+    private void jtfParcelaBuscarParcelaKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfParcelaBuscarParcelaKeyReleased
+    {//GEN-HEADEREND:event_jtfParcelaBuscarParcelaKeyReleased
+        try
+        {
+            buscarFiltroParcela();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jtfParcelaBuscarParcelaKeyReleased
+
+    private void jtfParcelaBuscarFincaKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfParcelaBuscarFincaKeyReleased
+    {//GEN-HEADEREND:event_jtfParcelaBuscarFincaKeyReleased
+        try
+        {
+            buscarFiltroParcela();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jtfParcelaBuscarFincaKeyReleased
+
+    private void jtfParcelaBuscarDescripcionKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfParcelaBuscarDescripcionKeyReleased
+    {//GEN-HEADEREND:event_jtfParcelaBuscarDescripcionKeyReleased
+        try
+        {
+            buscarFiltroParcela();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jtfParcelaBuscarDescripcionKeyReleased
+
+    private void jtfTipoBuscarNombreKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfTipoBuscarNombreKeyReleased
+    {//GEN-HEADEREND:event_jtfTipoBuscarNombreKeyReleased
+        try
+        {
+            buscarFiltroTipoProducto();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jtfTipoBuscarNombreKeyReleased
+
+    private void jtfTipoBuscarDescripcionKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfTipoBuscarDescripcionKeyReleased
+    {//GEN-HEADEREND:event_jtfTipoBuscarDescripcionKeyReleased
+        try
+        {
+            buscarFiltroTipoProducto();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jtfTipoBuscarDescripcionKeyReleased
+
+    private void jtfVariedadBuscarNombreKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfVariedadBuscarNombreKeyReleased
+    {//GEN-HEADEREND:event_jtfVariedadBuscarNombreKeyReleased
+        try
+        {
+            buscarFiltroVariedad();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jtfVariedadBuscarNombreKeyReleased
+
+    private void jtfVariedadBuscarTipoKeyReleased(java.awt.event.KeyEvent evt)//GEN-FIRST:event_jtfVariedadBuscarTipoKeyReleased
+    {//GEN-HEADEREND:event_jtfVariedadBuscarTipoKeyReleased
+        try
+        {
+            buscarFiltroVariedad();
+        } catch (Exception ex)
+        {
+            Logger.getLogger(FrameDelAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jtfVariedadBuscarTipoKeyReleased
+
+    private void buscarFiltroFinca() throws SQLException, Exception
+    {
+        String descripcion = jtfFincaBuscarDescripcion.getText();
+        String localizacion = jtfFincaBuscarLocalizacion.getText();
+        String nombre = jtfFincaBuscarNombre.getText();
+        mandaConsultaServidor("SELECT * FROM TFinca WHERE Nombre LIKE \'%" + nombre
+                + "%\' AND Localizacion LIKE \'%" + localizacion
+                + "%\' AND Descripcion LIKE \'%" + descripcion + "%\' ;", "FINCA");
+    }
+
+    private void buscarFiltroParcela() throws SQLException, Exception
+    {
+        String parcela = jtfParcelaBuscarParcela.getText().toString();
+        String finca = jtfParcelaBuscarFinca.getText().toString();
+        String descripcion = jtfParcelaBuscarDescripcion.getText().toString();
+        mandaConsultaServidor("SELECT * FROM TParcela WHERE IdParcela LIKE \'%" + parcela
+                + "%\' AND IdFinca LIKE \'%" + finca
+                + "%\' AND Descripcion LIKE \'%" + descripcion + "%\' ;", "PARCELA");
+    }
+
+    private void buscarFiltroTipoProducto() throws SQLException, Exception
+    {
+        String nombre = jtfTipoBuscarNombre.getText().toString();
+        String descripcion = jtfTipoBuscarDescripcion.getText().toString();
+        mandaConsultaServidor("SELECT * FROM TTipo WHERE Nombre LIKE \'%" + nombre
+                + "%\' AND Descripcion LIKE \'%" + descripcion + "%\' ;", "TIPO");
+    }
+
+    private void buscarFiltroVariedad() throws SQLException, Exception
+    {
+        String nombre = jtfVariedadBuscarNombre.getText().toString();
+        String variedad = jtfVariedadBuscarTipo.getText().toString();
+        mandaConsultaServidor("SELECT * FROM TVariedad WHERE Nombre LIKE \'%" + nombre
+                + "%\' AND IdTipo LIKE \'%" + variedad + "%\' ;", "VARIEDAD");
+    }
+
     public void miInitValores()
     {
         try
         {
-            socketCliente = new Socket(frameDelLogin.getIPServidor(), frameDelLogin.getPuertoServidor());
+            //socketCliente = new Socket(frameDelLogin.getIPServidor(), frameDelLogin.getPuertoServidor());
             paraServidor = new DataOutputStream(socketCliente.getOutputStream());
             delServidor = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
             // Establecemos la comunicación con el server
@@ -1053,17 +1293,24 @@ public class FrameDelAdmin extends javax.swing.JFrame
             mensajeServidor = fechaAct.toString();
             paraServidor.writeBytes(mensajeServidor + '\n');
             // Enviamos user
-            paraServidor.writeBytes(frameDelLogin.getUser() + '\n');
+            //paraServidor.writeBytes(frameDelLogin.getUser() + '\n');
+            paraServidor.writeBytes(user + '\n');
             //Enviamos paswd
-            paraServidor.writeBytes(frameDelLogin.getPass() + '\n');
+            //paraServidor.writeBytes(frameDelLogin.getPass() + '\n');
+            paraServidor.writeBytes(pass + '\n');
 
             // Esperamos la respuesta del server
             respuestaServidor = delServidor.readLine();
 
             if (respuestaServidor.compareToIgnoreCase(("ERROR_INICIO")) == 0)
             {
-                System.out.println("Fallo de conexion. El servidor rechaza la conexion del cliente");
+                System.out.println("Fallo de conexion. El servidor rechaza la conexion del cliente__");
                 finalizar = true;
+                JOptionPane.showMessageDialog(null, "Login o pass incorrecto");
+                paraServidor.close();
+                delServidor.close();
+                socketCliente.close();
+                System.exit(1);
             }
             else if (respuestaServidor.compareToIgnoreCase(("OK_INICIO")) == 0)
             {
